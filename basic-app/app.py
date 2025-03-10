@@ -19,6 +19,11 @@ with ui.sidebar():
         min=0,
         max=120
     )
+    ui.input_select(
+        "sex",
+        "Sex",
+        choices=["Male", "Female"]
+    )
     ui.input_numeric(
         "height",
         "Height (cm)",
@@ -59,6 +64,7 @@ with ui.card(full_screen=True):
         # Create a single row dataframe with the input values
         data = pd.DataFrame({
             "age": [input.age()],
+            "sex": [input.sex()],
             "height": [input.height()],
             "cc": [input.cc()],
             "muac": [input.muac()],
