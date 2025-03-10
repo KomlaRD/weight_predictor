@@ -1,58 +1,58 @@
-from shiny import App, render, ui, reactive
+from shiny import reactive, req
+from shiny.express import ui, render, input, app
 import h2o
 import pandas as pd
 
 # Initialize h2o
 h2o.init()
 
-# # Load the saved model
-# model = h2o.load_model("StackedEnsemble_BestOfFamily_6_AutoML_1_20250210_152551")
+# Load the saved model
+model = h2o.load_model("StackedEnsemble_BestOfFamily_4_AutoML_1_20250310_151241")
 
-app_ui = ui.page_sidebar(
-    ui.panel_title("Weight Prediction App"),
-    ui.sidebar(
-        ui.input_numeric(
-            "age",
-            "Age (years)",
-            value=30,
-            min=0,
-            max=120
-        ),
-        ui.input_numeric(
-            "height",
-            "Height (cm)",
-            value=170,
-            min=100,
-            max=250
-        ),
-        ui.input_numeric(
-            "cc",
-            "Calf Circumference (cm)",
-            value=35,
-            min=10,
-            max=100
-        ),
-        ui.input_numeric(
-            "muac",
-            "Mid-Upper Arm Circumference (cm)",
-            value=30,
-            min=10,
-            max=100
-        ),
-        ui.input_select(
-            "bmi_cat",
-            "BMI Category",
-            choices=["Normal", "Overweight", "Underweight", "Obese"]
-        ),
-        ui.input_action_button("predict", "Predict Weight"),
-    ),
-    ui.card(
-        ui.card_header("Prediction Result"),
-        ui.output_text("prediction"),
-    ),
-)
+ui.page_opts(title="Weight Prediction App")
 
-def server(input, output, session):
+with ui.sidebar():
+    ui.input_numeric(
+        "age",
+        "Age (years)",
+        value=30,
+        min=0,
+        max=120
+    )
+    ui.input_numeric(
+        "height",
+        "Height (cm)",
+        value=170,
+        min=100,
+        max=250
+    )
+    ui.input_numeric(
+        "cc",
+        "Calf Circumference (cm)",
+        value=35,
+        min=10,
+        max=100
+    )
+    ui.input_numeric(
+        "muac",
+        "Mid-Upper Arm Circumference (cm)",
+        value=30,
+        min=10,
+        max=100
+    )
+    ui.input_select(
+        "bmi_cat",
+        "BMI Category",
+        choices=["Normal", "Overweight", "Underweight", "Obese"]
+    )
+    ui.input_action_button("predict", "Predict Weight")
+
+with ui.card(full_screen=True):
+    ui.card_header("Prediction Result")
+    
+    # Store prediction result
+    prediction_result = reactive.value("")
+    
     @reactive.effect
     @reactive.event(input.predict)
     def predict_weight():
@@ -72,11 +72,9 @@ def server(input, output, session):
         prediction = model.predict(h2o_data)
         predicted_weight = prediction.as_data_frame()['predict'][0]
         
-        # Update the output
-        @output
-        @render.text
-        def prediction():
-            return f"Predicted Weight: {predicted_weight:.1f} kg"
-
-app = App(app_ui, server)
-
+        # Update the reactive value
+        prediction_result.set(f"Predicted Weight: {predicted_weight:.1f} kg")
+    
+    @render.text
+    def prediction():
+        return prediction_result()
