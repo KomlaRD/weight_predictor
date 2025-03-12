@@ -2,12 +2,16 @@ from shiny import reactive, req
 from shiny.express import ui, render, input, app
 import h2o
 import pandas as pd
+import polars as pt
 
 # Initialize h2o
 h2o.init()
 
 # Load the saved model
 model = h2o.load_model("StackedEnsemble_BestOfFamily_4_AutoML_1_20250310_151241")
+
+# Store prediction result as a reactive value
+prediction_result = reactive.value("")
 
 ui.page_opts(title="Weight Prediction App")
 
@@ -52,35 +56,38 @@ with ui.sidebar():
     )
     ui.input_action_button("predict", "Predict Weight")
 
-with ui.card(full_screen=True):
-    ui.card_header("Prediction Result")
+# Define the prediction effect outside of any UI component
+@reactive.effect
+@reactive.event(input.predict)
+def predict_weight():
+    # Create a single row dataframe with the input values
+    data = pd.DataFrame({
+        "age": [input.age()],
+        "sex": [input.sex()],
+        "height": [input.height()],
+        "cc": [input.cc()],
+        "muac": [input.muac()],
+        "bmi_cat": [input.bmi_cat()]
+    })
     
-    # Store prediction result
-    prediction_result = reactive.value("")
+    # Convert to h2o frame
+    h2o_data = h2o.H2OFrame(data)
+ 
+    # Make prediction
+    prediction = model.predict(h2o_data)
+    predicted_weight = prediction.as_data_frame(use_multi_thread=True)['predict'][0]
     
-    @reactive.effect
-    @reactive.event(input.predict)
-    def predict_weight():
-        # Create a single row dataframe with the input values
-        data = pd.DataFrame({
-            "age": [input.age()],
-            "sex": [input.sex()],
-            "height": [input.height()],
-            "cc": [input.cc()],
-            "muac": [input.muac()],
-            "bmi_cat": [input.bmi_cat()]
-        })
-        
-        # Convert to h2o frame
-        h2o_data = h2o.H2OFrame(data)
-        
-        # Make prediction
-        prediction = model.predict(h2o_data)
-        predicted_weight = prediction.as_data_frame()['predict'][0]
-        
-        # Update the reactive value
-        prediction_result.set(f"Predicted Weight: {predicted_weight:.1f} kg")
-    
+    # Update the reactive value
+    prediction_result.set(f"Predicted Weight: {predicted_weight:.1f} kg")
+
+# Use a card instead of value_box with icon
+with ui.card(
+    full_screen=True,
+    height="200px",
+    title="Predicted Weight"
+):
     @render.text
-    def prediction():
+    def prediction_display():
+        if prediction_result() == "":
+            return "Click 'Predict Weight' to see result"
         return prediction_result()
