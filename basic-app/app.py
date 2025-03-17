@@ -4,8 +4,8 @@ import h2o
 import pandas as pd
 import polars as pt
 
-# # Initialize h2o
-# h2o.init()
+# Initialize h2o
+h2o.init()
 
 # Load the saved model
 model = h2o.load_model("StackedEnsemble_BestOfFamily_4_AutoML_1_20250310_151241")
