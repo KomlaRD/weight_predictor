@@ -13,7 +13,8 @@ model = h2o.load_model("StackedEnsemble_BestOfFamily_4_AutoML_1_20250310_151241"
 # Store prediction result as a reactive value
 prediction_result = reactive.value("")
 
-ui.page_opts(title="Weight Prediction App")
+ui.page_opts(title="Weight Prediction App", tags=ui.tags(
+        ui.tags.link(rel="stylesheet", type="text/css", href="styles.css")))
 
 with ui.sidebar():
     ui.input_numeric(
