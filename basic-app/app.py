@@ -14,14 +14,10 @@ model = h2o.load_model("StackedEnsemble_BestOfFamily_4_AutoML_1_20250310_151241"
 prediction_result = reactive.value("")
 
 ui.page_opts(
-    title="Weight Prediction App", 
+    title=ui.img(src="ai_app.jpeg", alt="AI App Logo", height="50px"),
+    window_title="Weight Prediction App", 
+    fillable=True
 )
-
-# Add a header with logo
-with ui.layout_column_wrap(width=1, fill=False):
-    with ui.card(height="auto"):
-        with ui.div(style="display: flex; align-items: center;"):
-            ui.img(src="logo.webp", style="max-height: 100px; margin-right: 20px;")
 
 with ui.sidebar():
     ui.input_numeric(
