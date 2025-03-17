@@ -17,12 +17,11 @@ prediction_result = reactive.value("")
 #         ui.tags.link(rel="stylesheet", type="text/css", href="styles.css")))
 
 # Setup the UI with custom title, logo and stylesheet
+# Setup the UI with custom title, logo and stylesheet
 ui.page_opts(
     title="Weight Prediction App", 
     fillable=True,
-    tags=ui.tags(
-        ui.tags.link(rel="stylesheet", type="text/css", href="styles.css")
-    )
+    head=ui.tags.link(rel="stylesheet", type="text/css", href="styles.css")
 )
 
 with ui.sidebar():
