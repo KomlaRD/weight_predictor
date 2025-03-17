@@ -21,7 +21,7 @@ ui.page_opts(
 with ui.layout_column_wrap(width=1, fill=False):
     with ui.card(height="auto"):
         with ui.div(style="display: flex; align-items: center;"):
-            ui.img(src="ai_app.jpeg", style="max-height: 80px; margin-right: 20px;")
+            ui.img(src="ai_app.png")
 
 with ui.sidebar():
     ui.input_numeric(
