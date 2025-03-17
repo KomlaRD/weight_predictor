@@ -20,10 +20,10 @@ ui.page_opts(
 # Add a header with logo
 with ui.layout_column_wrap(width=1, fill=False):
     with ui.card(height="auto"):
-        ui.row(
-            ui.column(4, ui.img(src="ai_app.jpeg", style="max-height: 80px;")),
-            ui.column(8, ui.h2("Weight Prediction Tool"))
-        )
+        with ui.div(style="display: flex; align-items: center;"):
+            ui.img(src="ai_app.jpeg", style="max-height: 80px; margin-right: 20px;")
+            ui.h2("Weight Prediction Tool")
+
 
 with ui.sidebar():
     ui.input_numeric(
