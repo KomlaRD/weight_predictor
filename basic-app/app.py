@@ -14,7 +14,7 @@ model = h2o.load_model("StackedEnsemble_BestOfFamily_4_AutoML_1_20250310_151241"
 prediction_result = reactive.value("")
 
 ui.page_opts(
-    title=ui.img(src="ai_app.jpeg", alt="AI App Logo", height="50px"),
+    title=ui.img(src="https://github.com/KomlaRD/weight_predictor/blob/main/basic-app/ai_app.jpeg", alt="Weight Prediction App", height="50px"),
     window_title="Weight Prediction App", 
     fillable=True
 )
