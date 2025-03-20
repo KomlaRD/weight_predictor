@@ -3,4 +3,4 @@ pandas
 h2o
 joblib
 numpy
-sklearn
+scikit-learn
