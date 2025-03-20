@@ -4,3 +4,4 @@ h2o
 polars
 pyarrow
 joblib
+sklearn
