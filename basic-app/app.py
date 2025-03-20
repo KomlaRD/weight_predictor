@@ -16,11 +16,7 @@ height_model = joblib.load("huber_regressor_model.joblib")
 weight_prediction = reactive.value("")
 height_prediction = reactive.value("")
 
-ui.page_opts(
-    title=ui.img(src="https://github.com/KomlaRD/weight_predictor/blob/main/basic-app/ai_app.jpeg", alt="Anthro Prediction App", height="50px"),
-    window_title="Anthro Prediction App", 
-    fillable=True
-)
+ui.page_opts(title="Anthro Prediction App", fillable=True)
 
 with ui.navset_tab():
     # Weight Prediction Tab
