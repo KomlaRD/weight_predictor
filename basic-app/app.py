@@ -156,11 +156,3 @@ def predict_height():
     
     # Update the reactive value
     height_prediction.set(f"Predicted Height: {predicted_height:.1f} cm")
-
-ui.HTML(
-    """
-    <div class="footer">
-        © 2025 Developed and maintained by Eric Anku, RD, MPH
-    </div>
-    """
-)
