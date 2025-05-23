@@ -9,7 +9,7 @@ import numpy as np
 h2o.init()
 
 # Load the saved models
-weight_model = h2o.load_model("StackedEnsemble_BestOfFamily_4_AutoML_1_20250310_151241")
+weight_model = h2o.load_model("StackedEnsemble_BestOfFamily_4_AutoML_1_20250515_102526")
 height_model = joblib.load("huber_regressor_model.joblib")
 
 # Store prediction results as reactive values
